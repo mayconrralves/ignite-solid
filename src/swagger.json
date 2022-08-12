@@ -1,0 +1,245 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Users Exercises Documentation",
+        "description": "This is an API Rest",
+        "version": "1.0.0",
+        "contact": {
+            "email": "teste@test.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [ "Users" ],
+                "summary": "Cria um novo usuário.",
+                "description": "Create a new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Teste",
+                                    "email": "teste@test.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "format": "json",
+                                    "example": {
+                                        "id": "uuid-id",
+                                        "name": "Teste",
+                                        "email": "teste@test.com",
+                                        "admin": false,
+                                        "created_at": "2022-12-12T01:02:31.941Z",
+                                        "updated_at": "2022-12-12T01:02:31.941Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "format": "json",
+                                    "example": {
+                                        "msg": "User already exists"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }, 
+            "get": {
+                "tags": ["Users"],
+                "summary": "Retorna todos os usuários, se for um usuário admin",
+                "description": "list all users, if it's admin",
+                "parameters": [
+                    {
+                        "in":"header",
+                        "name": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type":"string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "example": [
+                                        {
+                                            "id": "uuid-id",
+                                            "name": "Teste",
+                                            "email": "teste@test.com",
+                                            "admin": false,
+                                            "created_at": "2022-12-12T01:02:31.941Z",
+                                            "updated_at": "2022-12-12T01:02:31.941Z"
+                                        },
+                                        {
+                                            "id": "uuid-id2",
+                                            "name": "Teste",
+                                            "email": "teste2@test.com",
+                                            "admin": false,
+                                            "created_at": "2022-12-13T01:02:31.941Z",
+                                            "updated_at": "2022-12-13T01:02:31.941Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User do not admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "format": "json",
+                                    "example": {
+                                        "msg": "User do not admin or User isn't admin"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Retorna Um usuário específico",
+                "description": "return a user",
+                "required": true,
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minimum": 1,
+                            "description": "user id"
+                        }
+                    }
+            ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "id": "uuid-id",
+                                        "name": "Teste",
+                                        "email": "teste@test.com",
+                                        "admin": false,
+                                        "created_at": "2022-12-12T01:02:31.941Z",
+                                        "updated_at": "2022-12-12T01:02:31.941Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "format": "json",
+                                    "example": {
+                                        "msg": "User does not exist"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["Users"],
+                "summary": "Um usuário vira admin",
+                "description": "User turns an admin",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minimum": 1,
+                            "description": "user id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "id": "uuid-id",
+                                        "name": "Teste",
+                                        "email": "teste@test.com",
+                                        "admin": true,
+                                        "created_at": "2022-12-12T01:02:31.941Z",
+                                        "updated_at": "2022-12-12T01:02:31.941Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "format": "json",
+                                    "example": {
+                                        "msg": "User does not exist"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
